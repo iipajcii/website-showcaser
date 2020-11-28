@@ -8,6 +8,10 @@
 <body>
     <style type="text/css">
         .is-hidden {display: none}
+        .max-95 {
+            max-width: 95%;
+            margin: auto;
+        }
     </style>
     <script type="text/javascript">
         function toggleTab(element){
@@ -35,7 +39,7 @@
     <section class="hero is-primary is-bold mb-4">
       <div class="hero-body">
         <div class="container has-text-centered">
-          <h1 class="title">
+          <h1 class="title is-size-2">
             Dashboard
           </h1>
           <h2 class="subtitle">
@@ -55,16 +59,18 @@
     <div class="columns" id="view">
         {{-- Home View Start --}}
         <div class="column is-full has-text-centered" name="home">
-            <h1>Recent Activity</h1>
+            <h1 class="is-size-3  mb-4">Recent Activity</h1>
+            <hr class="mb-5" style="width: 70%; background-color: #DDD; height: 1px; margin: auto;">
             <div class="columns is-multiline">
-                @foreach($recent as $activity)<div class="column is-full"><span>{{$activity->created_at}} -- {{$activity->id}}</span></div>@endforeach
+                @foreach($recent as $activity)<div class="column is-full"><span>{{$activity}}</span></div>@endforeach
             </div>
         </div>
         {{-- Home View Stop --}}
 
         {{-- Create Entry Start --}}
         <div class="column is-full has-text-centered is-hidden" name="create-entry">
-            <h1>Create Entry</h1>
+            <h1 class="is-size-3  mb-4">Create Entry</h1>
+            <hr class="mb-5" style="width: 70%; background-color: #DDD; height: 1px; margin: auto;">
             <div class="columns is-centered">
                 <div class="column is-7">
                     <form method="post" action="{{route('api-create-website')}}">
@@ -109,15 +115,22 @@
                         </div>
                     </form>
                 </div>
+            </div>
         </div>
         {{-- Create Entry Stop  --}}
 
         {{-- Edit Entry Start --}}
-        <div class="column is-full has-text-centered is-hidden" name="edit-entry"><h1>Edit Entry</h1></div>
+        <div class="column is-full has-text-centered is-hidden" name="edit-entry">
+            <h1 class="is-size-3  mb-4">Edit Entry</h1>
+            <hr class="mb-5" style="width: 70%; background-color: #DDD; height: 1px; margin: auto;">
+            <div class="columns">
+            {{-- One Line Component--}}@foreach($website as $site)<div class="column is-4"><div class="card max-95"><div class="card-image"><figure class="image is-4by3"><img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image"></figure></div><div class="card-content"><div class="media"><div class="media-left"></div><div class="media-content"><p class="title is-4">{{$site->name}}</p><p class="subtitle is-6">@foreach(explode("+",$site->categories) as $tag)<span class="tag is-info mr-1">{{$tag}}</span>@endforeach</p></div></div><div class="content">{{$site->description}}<br><div class="columns mt-3"><div class="column"><button class="button is-primary m-2" style="width: 100%;">Edit Details</button></div></div></div></div></div></div>@endforeach
+            </div>
+        </div>
         {{-- Edit Entry Stop  --}}
 
         {{-- Toggle Entry Start --}}
-        <div class="column is-full has-text-centered is-hidden" name="toggle-entry"><h1>Toggle Entry</h1></div>
+        <div class="column is-full has-text-centered is-hidden" name="toggle-entry"><h1 class="is-size-3 mb-4">Toggle Entry</h1><hr class="mb-5" style="width: 70%; background-color: #DDD; height: 1px; margin: auto;"></div>
         {{-- Toggle Entry Stop  --}}
     </div>
 </body>

@@ -21,5 +21,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('create-website', function (Request $request){
     Website::add_website($request);
-    return $request;
+    return back();
 })->name('api-create-website');

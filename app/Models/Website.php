@@ -24,7 +24,7 @@ class Website extends Model
         $website->save();
         $action = new Action();
         $action->type = "Create";
-        $action->parameters = $website->id. ', ' .$website->name;
+        $action->parameters = $website->id. '+' .$website->name;
         $action->message = "";
         $action->save();
     }

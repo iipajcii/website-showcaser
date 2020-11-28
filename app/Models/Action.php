@@ -13,4 +13,21 @@ class Action extends Model
 {
     use HasFactory;
     protected $table = "actions";
+    public static function recent(){
+        $actions = Action::orderBy('created_at','desc')->take(10)->get();
+        $recent = [];
+        foreach($actions as $action){
+            $parameters = explode("+",$action->parameters);
+            switch($action->type){
+                case "Create":
+                    $recent[] = $action->created_at->toDateTimeString()." (" .$parameters[0].") "."Added Website \"".$parameters[1]."\"";
+                break;
+                default:
+                    $recent[] += "Unregistered Action: ID - ".$action->id;
+                break;
+            }
+        }
+        return $recent;
+        // return Action::orderBy('created_at','desc')->take(10)->get();
+    }
 }

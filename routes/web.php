@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Website;
 use App\Models\Action;
 use Illuminate\Http\Request;
+use App\Models\User;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,7 +19,11 @@ use Illuminate\Http\Request;
 Route::get( '/', function() {return view('index')->with('website',Website::all());});
 Route::get( '/login', function() {return view('login');})->name('login');
 Route::post('/dashboard', function(Request $request) {
-    $recent = Action::all();
-    return view('dashboard')->with('recent',$recent);
+    $user = User::where('name',$request->username)->where('password',$request->password)->first();
+    if(!$user){return redirect('login');}
+    else{
+        $recent = Action::recent();
+        return view('dashboard')->with('recent',$recent)->with('user',$user)->with('website',Website::get());
+    }
 })->name('dashboard');
 Route::get( '/dashboard', function(Request $request) {return redirect('login');});
