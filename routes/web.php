@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Models\Website;
+use App\Models\Action;
 use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
@@ -16,5 +17,8 @@ use Illuminate\Http\Request;
 
 Route::get( '/', function() {return view('index')->with('website',Website::all());});
 Route::get( '/login', function() {return view('login');})->name('login');
-Route::post('/dashboard', function(Request $request) {return view('dashboard');})->name('dashboard');
+Route::post('/dashboard', function(Request $request) {
+    $recent = Action::all();
+    return view('dashboard')->with('recent',$recent);
+})->name('dashboard');
 Route::get( '/dashboard', function(Request $request) {return redirect('login');});
