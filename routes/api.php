@@ -21,5 +21,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('create-website', function (Request $request){
     Website::add_website($request);
-    return back();
+    $path = $request->file('showcase-image')->store('showcase-images');
+    return $request;
 })->name('api-create-website');

@@ -35,6 +35,16 @@
                 }
             }
         }
+
+        function displayImage(imgElement){
+            var reader = new FileReader();
+            reader.onload = function()
+            {
+                var output = document.getElementById(imgElement);
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        };
     </script>
     <section class="hero is-primary is-bold mb-4">
       <div class="hero-body">
@@ -73,7 +83,7 @@
             <hr class="mb-5" style="width: 70%; background-color: #DDD; height: 1px; margin: auto;">
             <div class="columns is-centered">
                 <div class="column is-7">
-                    <form method="post" action="{{route('api-create-website')}}">
+                    <form method="post" action="{{route('api-create-website')}}" enctype="multipart/form-data" >
                         <div class="field">
                             <label class="label">Name</label>
                             <div class="control">
@@ -84,6 +94,22 @@
                             <label class="label">Website Link</label>
                             <div class="control">
                                 <input class="input" type="text" placeholder="e.g. https://the-new-awesome-website.com" name="link" />
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Website Display Image</label>
+                            <img id='website-showcase-image' src="https://bulma.io/images/placeholders/1280x960.png"/>
+                            <div class="file has-name is-fullwidth">
+                            <label class="file-label">
+                                <input class="file-input" type="file" name="showcase-image" onchange="displayImage('website-showcase-image')">
+                                <span class="file-cta">
+                                    <span class="file-icon">
+                                        <i class="fas fa-upload"></i>
+                                    </span>
+                                    <span class="file-label">Choose a file…</span>
+                                </span>
+                                <span class="file-name">Screen Shot 2017-07-29 at 15.54.25.png</span>
+                            </label>
                             </div>
                         </div>
                         <div class="field">
