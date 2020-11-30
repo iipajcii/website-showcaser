@@ -101,7 +101,7 @@
                             <img id='website-showcase-image' src="https://bulma.io/images/placeholders/1280x960.png"/>
                             <div class="file has-name is-fullwidth">
                             <label class="file-label">
-                                <input class="file-input" type="file" name="showcase-image" onchange="displayImage('website-showcase-image')">
+                                <input class="file-input" type="file" name="image" onchange="displayImage('website-showcase-image')">
                                 <span class="file-cta">
                                     <span class="file-icon">
                                         <i class="fas fa-upload"></i>

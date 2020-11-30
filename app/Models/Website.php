@@ -19,6 +19,7 @@ class Website extends Model
         $website->name = $req->name;
         $website->link = $req->link;
         $website->description = $req->description;
+        $website->image = $req->image;
         $website->categories = $req->categories;
         $website['is-hidden'] = (int)$req->hidden;
         $website->save();

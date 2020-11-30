@@ -16,6 +16,7 @@ class WebsiteSeeder extends Seeder
         DB::table('website')->insert([
 	   	'name' => 'First Site',
 		'description' => 'Here is the first site to be showcased',
+        'image' => 'default-image.jpg',
 		'link' => 'https://www.example.com',
 		'is-hidden' => false,
         'categories' =>"School+Work"
