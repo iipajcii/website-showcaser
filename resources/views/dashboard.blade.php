@@ -44,6 +44,7 @@
                 output.src = reader.result;
             };
             reader.readAsDataURL(event.target.files[0]);
+            document.getElementById('image-name').innerHTML = document.getElementsByName('image')[0].files[0].name;
         };
     </script>
     <section class="hero is-primary is-bold mb-4">
@@ -108,7 +109,7 @@
                                     </span>
                                     <span class="file-label">Choose a file…</span>
                                 </span>
-                                <span class="file-name">Screen Shot 2017-07-29 at 15.54.25.png</span>
+                                <span class="file-name" id="image-name">Default Image is currently selected</span>
                             </label>
                             </div>
                         </div>
