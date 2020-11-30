@@ -38,7 +38,13 @@
     </section>
     <div class="columns is-multiline">
         @foreach($website as $site)
-        <div class="column is-4"><div class="card max-95"><div class="card-image"><figure class="image is-4by3"><img src="{{asset(str_replace('public','storage',$site->image))}}" alt="Placeholder image"></figure></div><div class="card-content"><div class="media"><div class="media-left"></div><div class="media-content"><p class="title is-4">{{$site->name}}</p><p class="subtitle is-6">@foreach(explode("+",$site->categories) as $tag)<span class="tag is-info mr-1">{{$tag}}</span>@endforeach</p></div></div><div class="content">{{$site->description}}<br><div class="columns mt-3"><div class="column"><a href="{{$site->link}}" target="_blank" style="color:white"><button class="button is-primary m-2" style="width: 100%;">View Demonstration</button></a></div><div class="column"><button class="button is-ghost m-2" style="width: 100%;" onclick="toggleIsActive(document.getElementById('website-modal-{{$site->id}}'))">View Details</button></div></div></div></div></div></div>
+        <div class="column is-4"><div class="card max-95"><div class="card-image">
+            <picture class="image is-square">
+              <source srcset="{{asset(str_replace('public','storage',$site->image).'.square.webp')}}" type="image/webp">
+              <img src="{{asset(str_replace('public','storage',$site->image).'.square.jpeg')}}" type="image/jpeg"
+                   alt="Website Image">
+            </picture>
+        </div><div class="card-content"><div class="media"><div class="media-left"></div><div class="media-content"><p class="title is-4">{{$site->name}}</p><p class="subtitle is-6">@foreach(explode("+",$site->categories) as $tag)<span class="tag is-info mr-1">{{$tag}}</span>@endforeach</p></div></div><div class="content">{{$site->description}}<br><div class="columns mt-3"><div class="column"><a href="{{$site->link}}" target="_blank" style="color:white"><button class="button is-primary m-2" style="width: 100%;">View Demonstration</button></a></div><div class="column"><button class="button is-ghost m-2" style="width: 100%;" onclick="toggleIsActive(document.getElementById('website-modal-{{$site->id}}'))">View Details</button></div></div></div></div></div></div>
         @endforeach
     </div>
 

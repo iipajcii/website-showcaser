@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Actions;
+use Intervention\Image\ImageManager; //from composer package: intervention/image
 
 class Website extends Model
 {
@@ -28,6 +29,28 @@ class Website extends Model
         $action->parameters = $website->id. '+' .$website->name;
         $action->message = "";
         $action->save();
+
+        $manager = new ImageManager();
+        $image = str_replace('public','storage',$website->image);
+        $image = $manager->make($image);
+
+        $imageHeight = $image->height();
+        $imageWidth = $image->width();
+        $landscape = $portrat = false;
+
+        $imageHeight > $imageWidth ? $portrat = true : $landscape = true;
+        if($portrat){
+            $image->crop($imageWidth,$imageWidth,0,0);
+        }
+        else {
+            $image->crop($imageHeight,$imageHeight,0,0);
+        }
+
+        $image = $image->encode('jpeg');
+        $image->save(str_replace('public','storage',$website->image).'.square.jpeg');
+        $image = $image->encode('webp');
+        $image->save(str_replace('public','storage',$website->image).'.square.webp');
+        return true;
     }
 
     // public function edit_website(Request $req)

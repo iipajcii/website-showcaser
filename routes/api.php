@@ -24,7 +24,6 @@ Route::post('create-website', function (Request $request){
     $request->image = $path;
     Website::add_website($request);
     return $request;
-    // return $path;
 })->name('api-create-website');
 
 Route::get('websites',function(){return Website::all();})->name('api-websites');
