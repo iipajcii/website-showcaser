@@ -20,6 +20,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('create-website', function (Request $request){
+    $path = $request->file('image')->store('public/showcase-images');
+    $request->image = $path;
     Website::add_website($request);
-    return back();
+    return $request;
 })->name('api-create-website');
+
+Route::get('websites',function(){return Website::all();})->name('api-websites');
