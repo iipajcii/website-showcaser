@@ -20,10 +20,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('create-website', function (Request $request){
-    $path = $request->file('image')->store('public/showcase-images');
-    $request->image = $path;
+    if($request->image){$path = $request->file('image')->store('public/showcase-images');$request->image = $path;}
     Website::add_website($request);
     return $request;
 })->name('api-create-website');
+Route::post('edit-website', function (Request $request){
+    if($request->image){$path = $request->file('image')->store('public/showcase-images');$request->image = $path;}
+    Website::edit_website($request);
+    return $request;
+})->name('api-edit-website');
+Route::post('toggle-website', function (Request $request){
+    return Website::toggle_website($request);
+})->name('api-toggle-website');
 
 Route::get('websites',function(){return Website::all();})->name('api-websites');

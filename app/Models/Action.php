@@ -22,6 +22,15 @@ class Action extends Model
                 case "Create":
                     $recent[] = $action->created_at->toDateTimeString()." (" .$parameters[0].") "."Added Website \"".$parameters[1]."\"";
                 break;
+                case "Edit":
+                    $str = $action->created_at->toDateTimeString()." (" .$parameters[0].") "."Edited Website \"".$parameters[1]."\"";
+                    if(isset($parameters[2]) && ($parameters[2] != $parameters[1])){$str .= ", (renamed from \"".$parameters[2]."\")";}
+                    $recent[] = $str;
+                case "Toggle":
+                    $str = $action->created_at->toDateTimeString()." (" .$parameters[0].") "."Toggled Website \".$parameters[1].\""." it is now ";
+                    if(isset($parameters[2]) && (bool)$parameters[2]){$str .= "Visible";} else {$str .= "Hidden";}
+                    $recent[] = $str;
+                break;
                 default:
                     $recent[] += "Unregistered Action: ID - ".$action->id;
                 break;

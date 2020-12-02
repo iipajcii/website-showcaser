@@ -18,7 +18,7 @@ class CreateWebsiteTable extends Migration
             $table->timestamps();
             $table->string('name');
             $table->string('description',500);
-            $table->string('image',500);
+            $table->string('image',500)->default("");
             $table->string('link');
             $table->string('categories',200);
             $table->boolean('is-hidden');
