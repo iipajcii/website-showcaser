@@ -16,7 +16,7 @@ use App\Models\User;
 |
 */
 
-Route::get( '/', function() {return view('index')->with('website',Website::all());});
+Route::get( '/', function() {return view('index')->with('website',Website::where('is-hidden',false)->get());});
 Route::get( '/login', function() {return view('login');})->name('login');
 Route::post('/dashboard', function(Request $request) {
     $user = User::where('name',$request->username)->where('password',$request->password)->first();

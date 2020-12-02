@@ -15,6 +15,8 @@
     </style>
     <script type="text/javascript">
         function toggleTab(element){
+            document.getElementsByName('edit-entry-main')[0].classList.remove('is-hidden');
+
             let viewElements = document.getElementById('view').children;
             let name = element.getAttribute("name");
             let elements = document.getElementsByName(name);
@@ -34,6 +36,14 @@
                     elements[counter].classList.remove('is-hidden');
                 }
             }
+            for(counter = 1; document.getElementsByName('edit-entry-'+counter)[1]; counter++)
+            {
+                if(document.getElementsByName('edit-entry-'+counter)[1].tagName.toLowerCase() == 'div'){
+                    console.log(counter);
+                    document.getElementsByName('edit-entry-'+counter)[1].classList.add('is-hidden');
+                }
+
+            }
         }
 
         function toggleEditor(element) {
@@ -52,6 +62,8 @@
                     elements[counter].classList.remove('is-hidden');
                 }
             }
+            document.getElementsByName('edit-entry-main')[0].classList.add('is-hidden');
+
         }
 
         function displayImage(imgElement){
@@ -63,6 +75,17 @@
             };
             reader.readAsDataURL(event.target.files[0]);
             document.getElementById('image-name').innerHTML = document.getElementsByName('image')[0].files[0].name;
+        };
+
+        function displayEditorImage(imgElement){
+            var reader = new FileReader();
+            reader.onload = function()
+            {
+                var output = document.getElementById(imgElement);
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+            // document.getElementById('image-name').innerHTML = document.getElementsByName('image')[0].files[0].name;
         };
     </script>
     <section class="hero is-primary is-bold mb-4">
@@ -120,7 +143,7 @@
                             <img id='website-showcase-image' src="https://bulma.io/images/placeholders/1280x960.png"/>
                             <div class="file has-name is-fullwidth">
                             <label class="file-label">
-                                <input class="file-input" type="file" name="image" onchange="displayImage('website-showcase-image')">
+                                <input class="file-input" type="file" name="image" onchange="displayImage('website-showcase-image')" required>
                                 <span class="file-cta">
                                     <span class="file-icon">
                                         <i class="fas fa-upload"></i>
@@ -166,11 +189,12 @@
 
         {{-- Edit Entry Start --}}
         <div class="column is-full has-text-centered is-hidden"  style="z-index: 1" name="edit-entry">
-            <h1 class="is-size-3  mb-4">Edit Entry</h1>
-            <hr class="mb-5" style="width: 70%; background-color: #DDD; height: 1px; margin: auto;">
-            <div class="columns">
-            {{-- One Line Component--}}@foreach($website as $site)<div class="column is-4"><div class="card max-95"><div class="card-image"><picture class="image is-square"><source srcset="{{asset(str_replace('public','storage',$site->image).'.square.webp')}}" type="image/webp"><img src="{{asset(str_replace('public','storage',$site->image).'.square.jpeg')}}" type="image/jpeg"alt="Website Image"></picture></div><div class="card-content"><div class="media"><div class="media-left"></div><div class="media-content"><p class="title is-4">{{$site->name}}</p><p class="subtitle is-6">@foreach(explode("+",$site->categories) as $tag)<span class="tag is-info mr-1">{{$tag}}</span>@endforeach</p></div></div><div class="content">{{$site->description}}<br><div class="columns mt-3"><div class="column"><button class="button is-primary m-2" style="width: 100%;" onclick="toggleEditor(this)" name="edit-entry-{{$site->id}}">Edit Details</button></div></div></div></div></div></div>@endforeach
-
+            <div name="edit-entry-main">
+                <h1 class="is-size-3  mb-4">Edit Entry</h1>
+                <hr class="mb-5" style="width: 70%; background-color: #DDD; height: 1px; margin: auto;">
+                <div class="columns is-multiline">
+                {{-- One Line Component--}}@foreach($website as $site)<div class="column is-4"><div class="card max-95"><div class="card-image"><picture class="image is-square"><source srcset="{{asset(str_replace('public','storage',$site->image).'.square.webp')}}" type="image/webp"><img src="{{asset(str_replace('public','storage',$site->image).'.square.jpeg')}}" type="image/jpeg"alt="Website Image"></picture></div><div class="card-content"><div class="media"><div class="media-left"></div><div class="media-content"><p class="title is-4">{{$site->name}}</p><p class="subtitle is-6">@foreach(explode("+",$site->categories) as $tag)<span class="tag is-info mr-1">{{$tag}}</span>@endforeach</p></div></div><div class="content">{{$site->description}}<br><div class="columns mt-3"><div class="column"><button class="button is-primary m-2" style="width: 100%;" onclick="toggleEditor(this)" name="edit-entry-{{$site->id}}">Edit Details</button></div></div></div></div></div></div>@endforeach
+                </div>
             </div>
             <div class="columns" id="edit-entry-pages">
                 {{-- Edit Entry Pages Start --}}
@@ -200,14 +224,14 @@
                                 <img id='website-showcase-image-{{$site->id}}' src="{{asset(str_replace('public','storage',$site->image))}}"/>
                                 <div class="file has-name is-fullwidth">
                                 <label class="file-label">
-                                    <input class="file-input" type="file" name="image" onchange="displayImage('website-showcase-image-{{$site->id}}')">
+                                    <input class="file-input" type="file" name="image" onchange="displayEditorImage('website-showcase-image-{{$site->id}}',{{$site->id}})">
                                     <span class="file-cta">
                                         <span class="file-icon">
                                             <i class="fas fa-upload"></i>
                                         </span>
                                         <span class="file-label">Choose a file…</span>
                                     </span>
-                                    <span class="file-name" id="image-name">Default Image is currently selected</span>
+                                    <span class="file-name" name="image-name-{{$site->id}}">Default Image is currently selected</span>
                                 </label>
                                 </div>
                             </div>
