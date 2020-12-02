@@ -275,7 +275,13 @@
         {{-- Edit Entry Stop  --}}
 
         {{-- Toggle Entry Start --}}
-        <div class="column is-full has-text-centered is-hidden" name="toggle-entry"><h1 class="is-size-3 mb-4">Toggle Entry</h1><hr class="mb-5" style="width: 70%; background-color: #DDD; height: 1px; margin: auto;"></div>
+        <div class="column is-full has-text-centered is-hidden" name="toggle-entry">
+            <h1 class="is-size-3 mb-4">Toggle Entry</h1>
+            <hr class="mb-5" style="width: 70%; background-color: #DDD; height: 1px; margin: auto;">
+            <div class="columns is-multiline">
+            {{-- One Line Component--}}@foreach($website as $site)<div class="column is-4"><div class="card max-95"><div class="card-image"><picture class="image is-square"><source srcset="{{asset(str_replace('public','storage',$site->image).'.square.webp')}}" type="image/webp"><img src="{{asset(str_replace('public','storage',$site->image).'.square.jpeg')}}" type="image/jpeg"alt="Website Image"></picture></div><div class="card-content"><div class="media"><div class="media-left"></div><div class="media-content"><p class="title is-4">{{$site->name}}</p><p class="subtitle is-6">@foreach(explode("+",$site->categories) as $tag)<span class="tag is-info mr-1">{{$tag}}</span>@endforeach</p></div></div><div class="content">{{$site->description}}<br><div class="columns mt-3"><div class="column"><button class="button is-primary m-2" style="width: 100%;" name="toggle-entry-{{$site->id}}">Toggle Visibility</button></div></div></div></div></div></div>@endforeach
+            </div>
+        </div>
         {{-- Toggle Entry Stop  --}}
 
     </div>
