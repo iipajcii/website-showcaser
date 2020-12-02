@@ -87,6 +87,51 @@
             reader.readAsDataURL(event.target.files[0]);
             // document.getElementById('image-name').innerHTML = document.getElementsByName('image')[0].files[0].name;
         };
+
+        function createXMLObject()
+        {
+            var xmlHttp;
+            if(window.ActiveXObject)
+            {
+                try { xml = new ActiveXObject("Microsoft.XMLHTTP"); }
+                catch(e) { xmlHttp = false; }
+            }
+            else
+            {
+                try { xmlHttp = new XMLHttpRequest(); }
+                catch (e) { xmlHttp = false; }
+            }
+            if(!xmlHttp){ alert("Error creating XMLHttpRequest Object"); }
+            else { return xmlHttp; }
+        }
+
+        function toggleVisibility(element, link) {
+            var ajax = createXMLObject();
+            if(ajax.readyState == 4 || ajax.readyState == 0)
+            {
+                ajax.open("POST",link,true);
+                ajax.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                ajax.setRequestHeader('X-CSRF-TOKEN', "{{ csrf_token() }}"); //Token is on index page
+
+                ajax.onreadystatechange = function() {
+                    if(ajax.readyState == 4) {
+                        if(ajax.status == 200)
+                        {
+                            console.log(ajax.responseText);
+                            return ajax.responseText;
+                            // setTimeout('ajaxProcess()',2000);
+                        }
+                    }
+                    else
+                    {
+                        console.log("Connecting...");
+                    }
+                }
+                var data = element.getAttribute('entryId');
+                if (data) {ajax.send("data=" + data);}
+                else {ajax.send();}
+            }
+        }
     </script>
     <section class="hero is-primary is-bold mb-4">
       <div class="hero-body">
@@ -279,7 +324,7 @@
             <h1 class="is-size-3 mb-4">Toggle Entry</h1>
             <hr class="mb-5" style="width: 70%; background-color: #DDD; height: 1px; margin: auto;">
             <div class="columns is-multiline">
-            {{-- One Line Component--}}@foreach($website as $site)<div class="column is-4"><div class="card max-95"><div class="card-image"><picture class="image is-square"><source srcset="{{asset(str_replace('public','storage',$site->image).'.square.webp')}}" type="image/webp"><img src="{{asset(str_replace('public','storage',$site->image).'.square.jpeg')}}" type="image/jpeg"alt="Website Image"></picture></div><div class="card-content"><div class="media"><div class="media-left"></div><div class="media-content"><p class="title is-4">{{$site->name}}</p><p class="subtitle is-6">@foreach(explode("+",$site->categories) as $tag)<span class="tag is-info mr-1">{{$tag}}</span>@endforeach</p></div></div><div class="content">{{$site->description}}<br><div class="columns mt-3"><div class="column"><button class="button is-primary m-2" style="width: 100%;" name="toggle-entry-{{$site->id}}">Toggle Visibility</button></div></div></div></div></div></div>@endforeach
+            {{-- One Line Component--}}@foreach($website as $site)<div class="column is-4"><div class="card max-95"><div class="card-image"><picture class="image is-square"><source srcset="{{asset(str_replace('public','storage',$site->image).'.square.webp')}}" type="image/webp"><img src="{{asset(str_replace('public','storage',$site->image).'.square.jpeg')}}" type="image/jpeg"alt="Website Image"></picture></div><div class="card-content"><div class="media"><div class="media-left"></div><div class="media-content"><p class="title is-4">{{$site->name}}</p><p class="subtitle is-6">@foreach(explode("+",$site->categories) as $tag)<span class="tag is-info mr-1">{{$tag}}</span>@endforeach</p></div></div><div class="content">{{$site->description}}<br><div class="columns mt-3"><div class="column"><button class="button is-primary m-2" style="width: 100%;" name="toggle-entry-{{$site->id}}" entryId="{{$site->id}}" onclick="toggleVisibility(this,'{{route("api-toggle-website")}}')">Toggle Visibility</button></div></div></div></div></div></div>@endforeach
             </div>
         </div>
         {{-- Toggle Entry Stop  --}}

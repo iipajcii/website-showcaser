@@ -30,8 +30,7 @@ Route::post('edit-website', function (Request $request){
     return $request;
 })->name('api-edit-website');
 Route::post('toggle-website', function (Request $request){
-    Website::toggle_website($request);
-    return $request;
+    return Website::toggle_website($request);
 })->name('api-toggle-website');
 
 Route::get('websites',function(){return Website::all();})->name('api-websites');

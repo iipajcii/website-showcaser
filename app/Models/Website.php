@@ -99,9 +99,16 @@ class Website extends Model
 
     public static function toggle_website(Request $req)
     {
-        $website = Website::findOrFail($req->id);
+        $website = Website::findOrFail($req->data);
         $website['is-hidden'] = !$website['is-hidden'];
-        return 0;
+        $website->save();
+        $action = new Action();
+        $action->type = "Toggle";
+        $action->parameters = $website->id. '+'.$website->name.'+'.$website['is-hidden'];
+        $action->message = "";
+        $action->save();
+        if($website['is-hidden']){return 0;}
+        else {return 1;}
     }
     // public function edit_website(Request $req)
     // {
