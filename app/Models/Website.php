@@ -35,6 +35,7 @@ class Website extends Model
             $manager = new ImageManager();
             // $image = 'public/showcase-images/'.$newImageName;
             // str_replace('public','storage',$image);
+		  //This fix was done when the site was moved to production. The bug was that 'php artisan storage:link' was not run. This line does not break the code
             $image = $req->file('image')->store('public/showcase-images');
             $image = __DIR__.'/../../storage/app/'.$image;
             // return $image;
