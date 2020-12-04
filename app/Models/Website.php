@@ -26,11 +26,7 @@ class Website extends Model
         $website->categories = $req->categories;
         $website['is-hidden'] = (int)$req->hidden;
         $website->save();
-        $action = new Action();
-        $action->type = "Create";
-        $action->parameters = $website->id. '+' .$website->name;
-        $action->message = "";
-        $action->save();
+
         if($imageUploaded){
             $manager = new ImageManager();
             $image = str_replace('public','storage',$website->image);
@@ -53,6 +49,12 @@ class Website extends Model
             $image = $image->encode('webp');
             $image->save(str_replace('public','storage',$website->image).'.square.webp');
         }
+        $action = new Action();
+        $action->type = "Create";
+        $action->parameters = $website->id. '+' .$website->name;
+        $action->message = "";
+        $action->save();
+
         return true;
     }
 
@@ -67,11 +69,6 @@ class Website extends Model
         if($req->categories){$website->categories = $req->categories;}
         if($req->hidden){$website['is-hidden'] = (int)$req->hidden;}
         $website->save();
-        $action = new Action();
-        $action->type = "Edit";
-        $action->parameters = $website->id. '+' .$website->name."+".$previousName;
-        $action->message = "";
-        $action->save();
         if($req->image){
             $manager = new ImageManager();
             $image = str_replace('public','storage',$website->image);
@@ -94,6 +91,12 @@ class Website extends Model
             $image = $image->encode('webp');
             $image->save(str_replace('public','storage',$website->image).'.square.webp');
         }
+        $action = new Action();
+        $action->type = "Edit";
+        $action->parameters = $website->id. '+' .$website->name."+".$previousName;
+        $action->message = "";
+        $action->save();
+
         return true;
     }
 
@@ -110,16 +113,4 @@ class Website extends Model
         if($website['is-hidden']){return 0;}
         else {return 1;}
     }
-    // public function edit_website(Request $req)
-    // {
-    //     $website = new Website();
-    //     $website->name = $req->name;
-    //     $website->link = $req->link;
-    //     $website->description = $req->description;
-    //     $website->save();
-    //     $action->type = "Edit";
-    //     // $website->name != $req->name ?
-    //     $action->parameters = $website->id. ', ' .$website->name;
-    //     $action->save();
-    // }
 }
