@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Actions;
 use Intervention\Image\ImageManager; //from composer package: intervention/image
+use Storage;
 
 class Website extends Model
 {
@@ -21,6 +22,9 @@ class Website extends Model
         $website->link = $req->link;
         $website->description = $req->description;
         $website->image = $req->image;
+        $newImageName = rand().md5(time());
+        Storage::copy($req->image, 'public/showcase-images/'.$newImageName);
+
         $imageUploaded = true;
         if($website->image == null) {$website->image = "default_image.png";$imageUploaded = false;}
         $website->categories = $req->categories;
@@ -29,7 +33,11 @@ class Website extends Model
 
         if($imageUploaded){
             $manager = new ImageManager();
-            $image = str_replace('public','storage',$website->image);
+            // $image = 'public/showcase-images/'.$newImageName;
+            // str_replace('public','storage',$image);
+            $image = $req->file('image')->store('public/showcase-images');
+            $image = __DIR__.'/../../storage/app/'.$image;
+            // return $image;
             $image = $manager->make($image);
 
             $imageHeight = $image->height();
